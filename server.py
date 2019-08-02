@@ -2,10 +2,12 @@ import os
 
 import flask
 import requests_oauthlib
+from dotenv import load_dotenv
 
 # Glitch url https://nguyenkims-flask-social-login-example.glitch.me
 from requests_oauthlib.compliance_fixes import facebook_compliance_fix
 
+load_dotenv()
 URL = "https://nguyenkims-flask-social-login-example.glitch.me"
 
 # SimpleLogin config
