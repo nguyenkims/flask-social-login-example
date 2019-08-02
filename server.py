@@ -80,7 +80,7 @@ def fb_login():
 @app.route("/fb-callback")
 def fb_callback():
     facebook = requests_oauthlib.OAuth2Session(
-        FB_CLIENT_ID, scope=FB_SCOPE, redirect_uri=URL + "/callback"
+        FB_CLIENT_ID, scope=FB_SCOPE, redirect_uri=URL + "/fb-callback"
     )
 
     # we need to apply a fix for Facebook here
@@ -89,7 +89,7 @@ def fb_callback():
     facebook.fetch_token(
         FB_TOKEN_URL,
         client_secret=FB_CLIENT_SECRET,
-        authorization_response=flask.request.url,
+        authorization_response=URL+flask.request.full_path
     )
 
     # Fetch a protected resource, i.e. user profile, via Graph API
