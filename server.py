@@ -70,9 +70,9 @@ def callback():
 @app.route("/fb-login")
 def fb_login():
     facebook = requests_oauthlib.OAuth2Session(
-        CLIENT_ID, redirect_uri=URL + "/fb-callback", scope=FB_SCOPE
+        FB_CLIENT_ID, redirect_uri=URL + "/fb-callback", scope=FB_SCOPE
     )
-    authorization_url, _ = facebook.authorization_url(AUTHORIZATION_BASE_URL)
+    authorization_url, _ = facebook.authorization_url(FB_AUTHORIZATION_BASE_URL)
 
     return flask.redirect(authorization_url)
 
@@ -87,7 +87,7 @@ def fb_callback():
     facebook = facebook_compliance_fix(facebook)
 
     facebook.fetch_token(
-        TOKEN_URL,
+        FB_TOKEN_URL,
         client_secret=FB_CLIENT_SECRET,
         authorization_response=flask.request.url,
     )
