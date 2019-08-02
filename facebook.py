@@ -60,7 +60,7 @@ def callback():
     email = facebook_user_data["email"]
     name = facebook_user_data["name"]
     picture_url = facebook_user_data.get("picture", {}).get("data", {}).get("url")
-    
+
     return f"""
     User information: <br>
     Name: {name} <br>

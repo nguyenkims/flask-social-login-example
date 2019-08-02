@@ -14,6 +14,7 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 app = flask.Flask(__name__)
 
+
 @app.route("/")
 def index():
     return """
@@ -21,5 +22,5 @@ def index():
     """
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
