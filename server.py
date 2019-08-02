@@ -98,7 +98,7 @@ def fb_callback():
         "https://graph.facebook.com/me?fields=id,name,email,picture{url}"
     ).json()
 
-    email = facebook_user_data["email"]
+    email = facebook_user_data.get("email")
     name = facebook_user_data["name"]
     avatar_url = facebook_user_data.get("picture", {}).get("data", {}).get("url")
 
