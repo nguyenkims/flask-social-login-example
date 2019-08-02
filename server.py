@@ -33,10 +33,7 @@ app = flask.Flask(__name__)
 
 @app.route("/")
 def index():
-    return """
-    <a href="/login">Login with SimpleLogin</a> <br>
-    <a href="/fb-login">Login with Facebook</a>
-    """
+    return flask.render_template("login.html")
 
 
 # <<< SimpleLogin endpoints >>>
@@ -62,7 +59,11 @@ def callback():
     email = user_info["email"]
     avatar_url = user_info.get("avatar_url")
     return flask.render_template(
-        "user_info.html", name=name, email=email, avatar_url=avatar_url
+        "user_info.html",
+        name=name,
+        email=email,
+        avatar_url=avatar_url,
+        provider="Simple Login",
     )
 
 
@@ -89,7 +90,7 @@ def fb_callback():
     facebook.fetch_token(
         FB_TOKEN_URL,
         client_secret=FB_CLIENT_SECRET,
-        authorization_response=URL+flask.request.full_path
+        authorization_response=URL + flask.request.full_path,
     )
 
     # Fetch a protected resource, i.e. user profile, via Graph API
@@ -103,7 +104,11 @@ def fb_callback():
     avatar_url = facebook_user_data.get("picture", {}).get("data", {}).get("url")
 
     return flask.render_template(
-        "user_info.html", name=name, email=email, avatar_url=avatar_url
+        "user_info.html",
+        name=name,
+        email=email,
+        avatar_url=avatar_url,
+        provider="Facebook",
     )
 
 
