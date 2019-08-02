@@ -43,7 +43,7 @@ def index():
 @app.route("/login")
 def login():
     simplelogin = requests_oauthlib.OAuth2Session(
-        CLIENT_ID, redirect_uri="http://localhost:5000/callback"
+        CLIENT_ID, redirect_uri=URL + "/callback"
     )
     authorization_url, _ = simplelogin.authorization_url(AUTHORIZATION_BASE_URL)
 
