@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Sign In
+  User Info
 {% endblock %}
 
 {% block content %}
@@ -14,6 +14,11 @@
       <p> Name: {{ name }} </p>
       <p> Email: {{ email }}</p>
     </div>
+  </div>
+  <div class="row mx-auto mt-4">
+    <button class="btn btn-danger">
+      <a href="/">Logout</a>
+    </button>
   </div>
 {% endblock %}
 
