@@ -1,19 +1,19 @@
-import flask
-import requests_oauthlib
 import os
 
+import flask
+import requests_oauthlib
 from requests_oauthlib.compliance_fixes import facebook_compliance_fix
 
 # Your ngrok url, obtained after running "ngrok http 5000"
 URL = "https://679e4c83.ngrok.io"
 
-CLIENT_ID = os.environ.get("CLIENT_ID")
-CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
+FB_CLIENT_ID = os.environ.get("FB_CLIENT_ID")
+FB_CLIENT_SECRET = os.environ.get("FB_CLIENT_SECRET")
 
-AUTHORIZATION_BASE_URL = "https://www.facebook.com/dialog/oauth"
-TOKEN_URL = "https://graph.facebook.com/oauth/access_token"
+FB_AUTHORIZATION_BASE_URL = "https://www.facebook.com/dialog/oauth"
+FB_TOKEN_URL = "https://graph.facebook.com/oauth/access_token"
 
-SCOPE = ["email"]
+FB_SCOPE = ["email"]
 
 # This allows us to use a plain HTTP callback
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
@@ -24,31 +24,33 @@ app = flask.Flask(__name__)
 @app.route("/")
 def index():
     return """
-    <a href="/login">Login with Facebook</a>
+    <a href="/fb-login">Login with Facebook</a>
     """
 
 
-@app.route("/login")
+@app.route("/fb-login")
 def login():
     facebook = requests_oauthlib.OAuth2Session(
-        CLIENT_ID, redirect_uri=URL + "/callback", scope=SCOPE
+        FB_CLIENT_ID, redirect_uri=URL + "/fb-callback", scope=FB_SCOPE
     )
-    authorization_url, _ = facebook.authorization_url(AUTHORIZATION_BASE_URL)
+    authorization_url, _ = facebook.authorization_url(FB_AUTHORIZATION_BASE_URL)
 
     return flask.redirect(authorization_url)
 
 
-@app.route("/callback")
+@app.route("/fb-callback")
 def callback():
     facebook = requests_oauthlib.OAuth2Session(
-        CLIENT_ID, scope=SCOPE, redirect_uri=URL + "/callback"
+        FB_CLIENT_ID, scope=FB_SCOPE, redirect_uri=URL + "/fb-callback"
     )
 
     # we need to apply a fix for Facebook here
     facebook = facebook_compliance_fix(facebook)
 
     facebook.fetch_token(
-        TOKEN_URL, client_secret=CLIENT_SECRET, authorization_response=flask.request.url
+        FB_TOKEN_URL,
+        client_secret=FB_CLIENT_SECRET,
+        authorization_response=flask.request.url,
     )
 
     # Fetch a protected resource, i.e. user profile, via Graph API
